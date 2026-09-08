@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { getStatusLabel, zhCN } from '@/locales/zh-CN';
 
 export default function Playground() {
   const [prompt, setPrompt] = useState('');
@@ -66,12 +67,12 @@ export default function Playground() {
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
-      setError('Please enter a prompt');
+      setError(zhCN.playground.enterPrompt);
       return;
     }
 
     if (!selectedModel) {
-      setError('No active providers. Please add API keys in Settings.');
+      setError(zhCN.playground.noActiveProvidersError);
       return;
     }
 
@@ -94,7 +95,7 @@ export default function Playground() {
       // Poll for status
       pollGenerationStatus(response.id);
     } catch (err: any) {
-      setError(err.message || 'Failed to generate video');
+      setError(err.message || zhCN.playground.failedToGenerate);
       setGenerating(false);
     }
   };
@@ -112,7 +113,7 @@ export default function Playground() {
           setGenerating(false);
           return;
         } else if (status.status === 'failed') {
-          setError(status.error || 'Generation failed');
+          setError(status.error || zhCN.playground.generationFailed);
           setGenerating(false);
           return;
         }
@@ -121,11 +122,11 @@ export default function Playground() {
         if (attempts < maxAttempts) {
           setTimeout(poll, 5000);
         } else {
-          setError('Generation timeout');
+          setError(zhCN.playground.generationTimeout);
           setGenerating(false);
         }
       } catch (err: any) {
-        setError(err.message || 'Failed to check status');
+        setError(err.message || zhCN.playground.failedToCheckStatus);
         setGenerating(false);
       }
     };
@@ -140,24 +141,24 @@ export default function Playground() {
   return (
     <div className="container mx-auto py-8 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Video Generation Playground</h1>
+        <h1 className="text-4xl font-bold mb-2">{zhCN.playground.title}</h1>
         <p className="text-muted-foreground">
-          Create AI-generated videos from text prompts
+          {zhCN.playground.description}
         </p>
       </div>
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Generate Video</CardTitle>
+          <CardTitle>{zhCN.playground.cardTitle}</CardTitle>
           <CardDescription>
-            Enter a prompt and configure parameters
+            {zhCN.playground.cardDescription}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Prompt</label>
+            <label className="block text-sm font-medium mb-2">{zhCN.playground.prompt}</label>
             <Textarea
-              placeholder="A serene sunset over mountains with birds flying..."
+              placeholder={zhCN.playground.promptPlaceholder}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               rows={4}
@@ -167,7 +168,7 @@ export default function Playground() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Model</label>
+              <label className="block text-sm font-medium mb-2">{zhCN.playground.model}</label>
               <select
                 className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
                 value={selectedModel}
@@ -175,7 +176,7 @@ export default function Playground() {
                 disabled={generating || availableModels.length === 0}
               >
                 {availableModels.length === 0 ? (
-                  <option>No active providers</option>
+                  <option>{zhCN.playground.noActiveProviders}</option>
                 ) : (
                   availableModels.map(({ provider, model }) => (
                     <option key={model} value={model}>
@@ -187,23 +188,23 @@ export default function Playground() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Aspect Ratio</label>
+              <label className="block text-sm font-medium mb-2">{zhCN.playground.aspectRatio}</label>
               <select
                 className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
                 value={aspectRatio}
                 onChange={(e) => setAspectRatio(e.target.value)}
                 disabled={generating}
               >
-                <option value="16:9">16:9 (Landscape)</option>
-                <option value="9:16">9:16 (Portrait)</option>
-                <option value="1:1">1:1 (Square)</option>
+                <option value="16:9">16:9（{zhCN.playground.landscape}）</option>
+                <option value="9:16">9:16（{zhCN.playground.portrait}）</option>
+                <option value="1:1">1:1（{zhCN.playground.square}）</option>
               </select>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Duration (seconds)</label>
+              <label className="block text-sm font-medium mb-2">{zhCN.playground.duration}</label>
               <Input
                 type="number"
                 min="1"
@@ -215,10 +216,10 @@ export default function Playground() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Seed (optional)</label>
+              <label className="block text-sm font-medium mb-2">{zhCN.playground.seed}</label>
               <Input
                 type="number"
-                placeholder="Random"
+                placeholder={zhCN.playground.random}
                 value={seed}
                 onChange={(e) => setSeed(e.target.value)}
                 disabled={generating}
@@ -229,13 +230,15 @@ export default function Playground() {
           {estimatedCost !== null && (
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Estimated Cost:</span>
+                <span className="text-sm font-medium">{zhCN.playground.estimatedCost}：</span>
                 <span className="text-lg font-bold text-green-600">
                   ${estimatedCost.toFixed(4)}
                 </span>
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Based on {duration}s video at {aspectRatio} resolution
+                {zhCN.playground.basedOn
+                  .replace('{duration}', String(duration))
+                  .replace('{aspectRatio}', aspectRatio)}
               </p>
             </div>
           )}
@@ -252,7 +255,7 @@ export default function Playground() {
             onClick={handleGenerate}
             disabled={generating || availableModels.length === 0}
           >
-            {generating ? 'Generating...' : 'Generate Video'}
+            {generating ? zhCN.playground.generating : zhCN.playground.generateVideo}
           </Button>
         </CardContent>
       </Card>
@@ -260,23 +263,23 @@ export default function Playground() {
       {currentGeneration && (
         <Card>
           <CardHeader>
-            <CardTitle>Generation Status</CardTitle>
+            <CardTitle>{zhCN.playground.generationStatus}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Status:</span>
+                <span className="text-sm font-medium">{zhCN.playground.status}：</span>
                 <span className={`text-sm px-2 py-1 rounded ${
                   currentGeneration.status === 'completed' ? 'bg-green-100 text-green-800' :
                   currentGeneration.status === 'failed' ? 'bg-red-100 text-red-800' :
                   'bg-blue-100 text-blue-800'
                 }`}>
-                  {currentGeneration.status}
+                  {getStatusLabel(currentGeneration.status)}
                 </span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Model:</span>
+                <span className="text-sm font-medium">{zhCN.playground.model}：</span>
                 <span className="text-sm text-muted-foreground">{currentGeneration.model}</span>
               </div>
 
@@ -287,14 +290,14 @@ export default function Playground() {
                     className="w-full rounded-lg"
                     src={currentGeneration.video.url}
                   >
-                    Your browser does not support the video tag.
+                    {zhCN.playground.browserUnsupported}
                   </video>
                   <Button
                     className="w-full mt-3"
                     variant="outline"
                     onClick={() => window.open(currentGeneration.video?.url)}
                   >
-                    Download Video
+                    {zhCN.playground.downloadVideo}
                   </Button>
                 </div>
               )}
@@ -303,7 +306,7 @@ export default function Playground() {
                 <div className="pt-3 border-t space-y-2">
                   {currentGeneration.usage.cost && (
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Cost:</span>
+                      <span className="text-sm font-medium">{zhCN.playground.cost}：</span>
                       <span className="text-sm text-muted-foreground">
                         ${currentGeneration.usage.cost.toFixed(2)}
                       </span>
@@ -311,9 +314,9 @@ export default function Playground() {
                   )}
                   {currentGeneration.usage.time_seconds && (
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Generation Time:</span>
+                      <span className="text-sm font-medium">{zhCN.playground.generationTime}：</span>
                       <span className="text-sm text-muted-foreground">
-                        {currentGeneration.usage.time_seconds.toFixed(1)}s
+                        {currentGeneration.usage.time_seconds.toFixed(1)} 秒
                       </span>
                     </div>
                   )}

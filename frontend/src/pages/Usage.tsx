@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { zhCN } from '@/locales/zh-CN';
 
 interface UsageSummary {
   total_generations: number;
@@ -82,7 +83,7 @@ export default function Usage() {
   if (loading) {
     return (
       <div className="container mx-auto py-8">
-        <div className="text-center py-12 text-muted-foreground">Loading usage data...</div>
+        <div className="text-center py-12 text-muted-foreground">{zhCN.usage.loading}</div>
       </div>
     );
   }
@@ -90,21 +91,21 @@ export default function Usage() {
   return (
     <div className="container mx-auto py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Usage & Cost Analytics</h1>
+        <h1 className="text-4xl font-bold mb-2">{zhCN.usage.title}</h1>
         <p className="text-muted-foreground">
-          Track your video generation usage and costs
+          {zhCN.usage.description}
         </p>
       </div>
 
       {/* Date Range Selector */}
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Date Range</CardTitle>
+          <CardTitle>{zhCN.usage.dateRange}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4 items-end">
             <div className="flex-1">
-              <label className="block text-sm font-medium mb-2">Start Date</label>
+              <label className="block text-sm font-medium mb-2">{zhCN.usage.startDate}</label>
               <input
                 type="date"
                 className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
@@ -113,7 +114,7 @@ export default function Usage() {
               />
             </div>
             <div className="flex-1">
-              <label className="block text-sm font-medium mb-2">End Date</label>
+              <label className="block text-sm font-medium mb-2">{zhCN.usage.endDate}</label>
               <input
                 type="date"
                 className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
@@ -121,7 +122,7 @@ export default function Usage() {
                 onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
               />
             </div>
-            <Button onClick={loadData}>Update</Button>
+            <Button onClick={loadData}>{zhCN.usage.update}</Button>
           </div>
         </CardContent>
       </Card>
@@ -132,50 +133,50 @@ export default function Usage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Total Cost</CardDescription>
+                <CardDescription>{zhCN.usage.totalCost}</CardDescription>
                 <CardTitle className="text-3xl text-green-600">
                   ${usage.summary.total_cost.toFixed(2)}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-xs text-muted-foreground">
-                  Avg: ${usage.summary.average_cost_per_generation.toFixed(4)}/video
+                  {zhCN.usage.average} ${usage.summary.average_cost_per_generation.toFixed(4)}{zhCN.usage.perVideo}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Total Generations</CardDescription>
+                <CardDescription>{zhCN.usage.totalGenerations}</CardDescription>
                 <CardTitle className="text-3xl">{usage.summary.total_generations}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-xs text-muted-foreground">
-                  Videos created in date range
+                  {zhCN.usage.videosInRange}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Video Duration</CardDescription>
-                <CardTitle className="text-3xl">{usage.summary.total_video_duration.toFixed(1)}s</CardTitle>
+                <CardDescription>{zhCN.usage.videoDuration}</CardDescription>
+                <CardTitle className="text-3xl">{usage.summary.total_video_duration.toFixed(1)} 秒</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-xs text-muted-foreground">
-                  Total output duration
+                  {zhCN.usage.totalOutputDuration}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-2">
-                <CardDescription>Processing Time</CardDescription>
-                <CardTitle className="text-3xl">{(usage.summary.total_processing_time / 60).toFixed(1)}m</CardTitle>
+                <CardDescription>{zhCN.usage.processingTime}</CardDescription>
+                <CardTitle className="text-3xl">{(usage.summary.total_processing_time / 60).toFixed(1)} 分钟</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-xs text-muted-foreground">
-                  Time spent generating
+                  {zhCN.usage.timeSpentGenerating}
                 </p>
               </CardContent>
             </Card>
@@ -184,8 +185,8 @@ export default function Usage() {
           {/* By Provider */}
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle>Cost by Provider</CardTitle>
-              <CardDescription>Breakdown of spending per provider</CardDescription>
+              <CardTitle>{zhCN.usage.costByProvider}</CardTitle>
+              <CardDescription>{zhCN.usage.providerBreakdown}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -195,7 +196,7 @@ export default function Usage() {
                       <div>
                         <h3 className="font-semibold capitalize">{provider.provider}</h3>
                         <p className="text-sm text-muted-foreground">
-                          {provider.count} videos • {provider.duration.toFixed(1)}s total duration
+                          {provider.count} {zhCN.usage.videos} • {zhCN.usage.totalDuration} {provider.duration.toFixed(1)} 秒
                         </p>
                       </div>
                       <div className="text-right">
@@ -203,7 +204,7 @@ export default function Usage() {
                           ${provider.cost.toFixed(2)}
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          ${provider.avg_cost_per_second.toFixed(4)}/sec
+                          ${provider.avg_cost_per_second.toFixed(4)} /秒
                         </p>
                       </div>
                     </div>
@@ -224,8 +225,8 @@ export default function Usage() {
           {/* Daily Stats */}
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle>Daily Usage</CardTitle>
-              <CardDescription>Day-by-day breakdown</CardDescription>
+              <CardTitle>{zhCN.usage.dailyUsage}</CardTitle>
+              <CardDescription>{zhCN.usage.dailyBreakdown}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -234,12 +235,12 @@ export default function Usage() {
                     <div className="flex-1">
                       <div className="font-medium">{day.date}</div>
                       <div className="text-sm text-muted-foreground">
-                        {day.count} videos • {day.success} success • {day.failed} failed
+                        {day.count} {zhCN.usage.videos} • {day.success} {zhCN.usage.success} • {day.failed} {zhCN.usage.failed}
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="font-semibold text-green-600">${day.cost.toFixed(2)}</div>
-                      <div className="text-xs text-muted-foreground">{day.duration.toFixed(1)}s</div>
+                      <div className="text-xs text-muted-foreground">{day.duration.toFixed(1)} 秒</div>
                     </div>
                   </div>
                 ))}
@@ -252,8 +253,8 @@ export default function Usage() {
       {/* Pricing Info */}
       <Card>
         <CardHeader>
-          <CardTitle>Current Pricing</CardTitle>
-          <CardDescription>Cost per second for each provider and model</CardDescription>
+          <CardTitle>{zhCN.usage.currentPricing}</CardTitle>
+          <CardDescription>{zhCN.usage.pricingDescription}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -265,21 +266,21 @@ export default function Usage() {
                       {price.provider} - {price.model}
                     </h3>
                     <p className="text-2xl font-bold text-green-600 mt-1">
-                      ${price.per_second}/second
+                      ${price.per_second}{zhCN.usage.perSecond}
                     </p>
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-4 text-sm">
                   <div className="text-center p-2 bg-gray-50 rounded">
-                    <div className="text-muted-foreground">5 seconds</div>
+                    <div className="text-muted-foreground">{zhCN.usage.seconds5}</div>
                     <div className="font-semibold">${price.examples["5_seconds"]}</div>
                   </div>
                   <div className="text-center p-2 bg-gray-50 rounded">
-                    <div className="text-muted-foreground">10 seconds</div>
+                    <div className="text-muted-foreground">{zhCN.usage.seconds10}</div>
                     <div className="font-semibold">${price.examples["10_seconds"]}</div>
                   </div>
                   <div className="text-center p-2 bg-gray-50 rounded">
-                    <div className="text-muted-foreground">20 seconds</div>
+                    <div className="text-muted-foreground">{zhCN.usage.seconds20}</div>
                     <div className="font-semibold">${price.examples["20_seconds"]}</div>
                   </div>
                 </div>

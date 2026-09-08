@@ -3,6 +3,7 @@ import { api, APIKeyResponse, ProviderInfo } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { getKeyStatusLabel, zhCN } from '@/locales/zh-CN';
 
 export default function Settings() {
   const [providers, setProviders] = useState<ProviderInfo[]>([]);
@@ -27,13 +28,13 @@ export default function Settings() {
       setProviders(providersData);
       setApiKeys(keysData);
     } catch (err: any) {
-      setError('Failed to load data');
+      setError(zhCN.settings.failedToLoad);
     }
   };
 
   const handleAddKey = async () => {
     if (!selectedProvider || !newApiKey.trim()) {
-      setError('Please select a provider and enter an API key');
+      setError(zhCN.settings.selectProviderAndKey);
       return;
     }
 
@@ -47,28 +48,28 @@ export default function Settings() {
         api_key: newApiKey.trim(),
       });
 
-      setSuccess('API key added successfully!');
+      setSuccess(zhCN.settings.keyAdded);
       setNewApiKey('');
       setShowAddKey(false);
       await loadData();
     } catch (err: any) {
-      setError(err.message || 'Failed to add API key');
+      setError(err.message || zhCN.settings.failedToAdd);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteKey = async (keyId: number) => {
-    if (!confirm('Are you sure you want to delete this API key?')) {
+    if (!confirm(zhCN.settings.confirmDelete)) {
       return;
     }
 
     try {
       await api.deleteAPIKey(keyId);
-      setSuccess('API key deleted successfully!');
+      setSuccess(zhCN.settings.keyDeleted);
       await loadData();
     } catch (err: any) {
-      setError(err.message || 'Failed to delete API key');
+      setError(err.message || zhCN.settings.failedToDelete);
     }
   };
 
@@ -79,13 +80,13 @@ export default function Settings() {
     try {
       const result = await api.validateAPIKey(keyId);
       if (result.valid) {
-        setSuccess('API key is valid!');
+        setSuccess(zhCN.settings.keyValid);
       } else {
-        setError('API key is invalid');
+        setError(zhCN.settings.keyInvalid);
       }
       await loadData();
     } catch (err: any) {
-      setError(err.message || 'Failed to validate API key');
+      setError(err.message || zhCN.settings.failedToValidate);
     } finally {
       setLoading(false);
     }
@@ -96,9 +97,9 @@ export default function Settings() {
   return (
     <div className="container mx-auto py-8 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Settings</h1>
+        <h1 className="text-4xl font-bold mb-2">{zhCN.settings.title}</h1>
         <p className="text-muted-foreground">
-          Manage your API keys and view usage statistics
+          {zhCN.settings.description}
         </p>
       </div>
 
@@ -116,16 +117,16 @@ export default function Settings() {
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>API Keys</CardTitle>
+          <CardTitle>{zhCN.settings.apiKeys}</CardTitle>
           <CardDescription>
-            Add and manage your provider API keys
+            {zhCN.settings.apiKeysDescription}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {apiKeys.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
-                No API keys configured. Add your first key to get started.
+                {zhCN.settings.emptyKeys}
               </div>
             ) : (
               <div className="space-y-3">
@@ -144,7 +145,7 @@ export default function Settings() {
                               : 'bg-red-100 text-red-800'
                           }`}
                         >
-                          {key.status}
+                          {getKeyStatusLabel(key.status)}
                         </span>
                       </div>
                       {key.key_preview && (
@@ -154,7 +155,7 @@ export default function Settings() {
                       )}
                       {key.last_validated && (
                         <div className="text-xs text-muted-foreground mt-1">
-                          Last validated: {new Date(key.last_validated).toLocaleString()}
+                          {zhCN.settings.lastValidated}{new Date(key.last_validated).toLocaleString('zh-CN')}
                         </div>
                       )}
                     </div>
@@ -165,14 +166,14 @@ export default function Settings() {
                         onClick={() => handleValidateKey(key.id)}
                         disabled={loading}
                       >
-                        Test
+                        {zhCN.settings.test}
                       </Button>
                       <Button
                         variant="destructive"
                         size="sm"
                         onClick={() => handleDeleteKey(key.id)}
                       >
-                        Delete
+                        {zhCN.settings.delete}
                       </Button>
                     </div>
                   </div>
@@ -186,20 +187,20 @@ export default function Settings() {
                 variant="outline"
                 onClick={() => setShowAddKey(true)}
               >
-                Add API Key
+                {zhCN.settings.addApiKey}
               </Button>
             )}
 
             {showAddKey && (
               <div className="border rounded-lg p-4 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Provider</label>
+                  <label className="block text-sm font-medium mb-2">{zhCN.settings.provider}</label>
                   <select
                     className="w-full h-10 rounded-md border border-input bg-background px-3 py-2"
                     value={selectedProvider}
                     onChange={(e) => setSelectedProvider(e.target.value)}
                   >
-                    <option value="">Select a provider</option>
+                    <option value="">{zhCN.settings.selectProvider}</option>
                     {providersWithoutKeys.map((provider) => (
                       <option key={provider.name} value={provider.name}>
                         {provider.display_name}
@@ -209,10 +210,10 @@ export default function Settings() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">API Key</label>
+                  <label className="block text-sm font-medium mb-2">{zhCN.settings.apiKey}</label>
                   <Input
                     type="password"
-                    placeholder="Enter your API key"
+                    placeholder={zhCN.settings.apiKeyPlaceholder}
                     value={newApiKey}
                     onChange={(e) => setNewApiKey(e.target.value)}
                   />
@@ -224,7 +225,7 @@ export default function Settings() {
                     onClick={handleAddKey}
                     disabled={loading}
                   >
-                    {loading ? 'Validating...' : 'Add Key'}
+                    {loading ? zhCN.settings.validating : zhCN.settings.addKey}
                   </Button>
                   <Button
                     variant="outline"
@@ -235,7 +236,7 @@ export default function Settings() {
                       setError('');
                     }}
                   >
-                    Cancel
+                    {zhCN.settings.cancel}
                   </Button>
                 </div>
               </div>
@@ -246,9 +247,9 @@ export default function Settings() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Available Providers</CardTitle>
+          <CardTitle>{zhCN.settings.availableProviders}</CardTitle>
           <CardDescription>
-            Supported video generation providers
+            {zhCN.settings.availableProvidersDescription}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -261,16 +262,16 @@ export default function Settings() {
                 <div>
                   <div className="font-medium">{provider.display_name}</div>
                   <div className="text-sm text-muted-foreground">
-                    Models: {provider.models.join(', ')}
+                    {zhCN.settings.models}{provider.models.join('、')}
                   </div>
                 </div>
                 {provider.has_key ? (
                   <span className="text-sm px-2 py-1 rounded bg-green-100 text-green-800">
-                    Configured
+                    {zhCN.settings.configured}
                   </span>
                 ) : (
                   <span className="text-sm px-2 py-1 rounded bg-gray-100 text-gray-800">
-                    Not configured
+                    {zhCN.settings.notConfigured}
                   </span>
                 )}
               </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { api, VideoGenerationResponse } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { getStatusLabel, zhCN } from '@/locales/zh-CN';
 
 export default function Gallery() {
   const [generations, setGenerations] = useState<VideoGenerationResponse[]>([]);
@@ -30,7 +31,7 @@ export default function Gallery() {
   };
 
   const handleDelete = async (generationId: string) => {
-    if (!confirm('Are you sure you want to delete this video?')) {
+    if (!confirm(zhCN.gallery.confirmDelete)) {
       return;
     }
 
@@ -38,7 +39,7 @@ export default function Gallery() {
       await api.deleteVideoGeneration(generationId);
       await loadGenerations();
     } catch (err: any) {
-      alert('Failed to delete video: ' + err.message);
+      alert(zhCN.gallery.failedToDelete + err.message);
     }
   };
 
@@ -48,21 +49,21 @@ export default function Gallery() {
   return (
     <div className="container mx-auto py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Video Gallery</h1>
+        <h1 className="text-4xl font-bold mb-2">{zhCN.gallery.title}</h1>
         <p className="text-muted-foreground">
-          Browse and manage your generated videos
+          {zhCN.gallery.description}
         </p>
       </div>
 
       <div className="mb-6 flex gap-4">
         <div>
-          <label className="block text-sm font-medium mb-2">Filter by Provider</label>
+          <label className="block text-sm font-medium mb-2">{zhCN.gallery.filterProvider}</label>
           <select
             className="h-10 rounded-md border border-input bg-background px-3 py-2"
             value={filterProvider}
             onChange={(e) => setFilterProvider(e.target.value)}
           >
-            <option value="">All Providers</option>
+            <option value="">{zhCN.gallery.allProviders}</option>
             {providers.map((provider) => (
               <option key={provider} value={provider}>
                 {provider}
@@ -72,13 +73,13 @@ export default function Gallery() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Filter by Status</label>
+          <label className="block text-sm font-medium mb-2">{zhCN.gallery.filterStatus}</label>
           <select
             className="h-10 rounded-md border border-input bg-background px-3 py-2"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
-            <option value="">All Statuses</option>
+            <option value="">{zhCN.gallery.allStatuses}</option>
             {statuses.map((status) => (
               <option key={status} value={status}>
                 {status}
@@ -90,11 +91,11 @@ export default function Gallery() {
 
       {loading ? (
         <div className="text-center py-12 text-muted-foreground">
-          Loading...
+          {zhCN.gallery.loading}
         </div>
       ) : generations.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
-          No videos found. Generate your first video in the Playground!
+          {zhCN.gallery.empty}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -114,7 +115,7 @@ export default function Gallery() {
                         ? 'bg-blue-100 text-blue-800'
                         : 'bg-red-100 text-red-800'
                     }`}>
-                      {generation.status}
+                      {getStatusLabel(generation.status)}
                     </span>
                   </div>
                 )}
@@ -128,16 +129,16 @@ export default function Gallery() {
 
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>{generation.model}</span>
-                    <span>{new Date(generation.created * 1000).toLocaleDateString()}</span>
+                    <span>{new Date(generation.created * 1000).toLocaleDateString('zh-CN')}</span>
                   </div>
 
                   {generation.usage && (
                     <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-2">
                       {generation.usage.cost && (
-                        <span>Cost: ${generation.usage.cost.toFixed(2)}</span>
+                        <span>{zhCN.gallery.cost}：${generation.usage.cost.toFixed(2)}</span>
                       )}
                       {generation.usage.time_seconds && (
-                        <span>Time: {generation.usage.time_seconds.toFixed(1)}s</span>
+                        <span>{zhCN.gallery.time}：{generation.usage.time_seconds.toFixed(1)} 秒</span>
                       )}
                     </div>
                   )}
@@ -150,7 +151,7 @@ export default function Gallery() {
                         className="flex-1"
                         onClick={() => window.open(generation.video?.url)}
                       >
-                        Download
+                        {zhCN.gallery.download}
                       </Button>
                     )}
                     <Button
@@ -159,7 +160,7 @@ export default function Gallery() {
                       className="flex-1"
                       onClick={() => handleDelete(generation.id)}
                     >
-                      Delete
+                      {zhCN.gallery.delete}
                     </Button>
                   </div>
                 </div>

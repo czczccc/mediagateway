@@ -37,6 +37,9 @@ npm run dev
 
 1. **Open the app**: http://localhost:3000
 
+   The frontend interface is provided in Simplified Chinese by default. The locale
+   strings are maintained in `frontend/src/locales/zh-CN.ts`.
+
 2. **Add API Key**:
    - Go to Settings
    - Click "Add API Key"

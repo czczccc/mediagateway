@@ -4,6 +4,7 @@ import Gallery from './pages/Gallery';
 import Settings from './pages/Settings';
 import Usage from './pages/Usage';
 import { Button } from './components/ui/button';
+import { zhCN } from './locales/zh-CN';
 
 function Navigation() {
   const location = useLocation();
@@ -24,7 +25,7 @@ function Navigation() {
                   variant={isActive('/') ? 'default' : 'ghost'}
                   size="sm"
                 >
-                  Playground
+                  {zhCN.navigation.playground}
                 </Button>
               </Link>
               <Link to="/gallery">
@@ -32,7 +33,7 @@ function Navigation() {
                   variant={isActive('/gallery') ? 'default' : 'ghost'}
                   size="sm"
                 >
-                  Gallery
+                  {zhCN.navigation.gallery}
                 </Button>
               </Link>
               <Link to="/usage">
@@ -40,7 +41,7 @@ function Navigation() {
                   variant={isActive('/usage') ? 'default' : 'ghost'}
                   size="sm"
                 >
-                  Usage
+                  {zhCN.navigation.usage}
                 </Button>
               </Link>
               <Link to="/settings">
@@ -48,7 +49,7 @@ function Navigation() {
                   variant={isActive('/settings') ? 'default' : 'ghost'}
                   size="sm"
                 >
-                  Settings
+                  {zhCN.navigation.settings}
                 </Button>
               </Link>
             </div>

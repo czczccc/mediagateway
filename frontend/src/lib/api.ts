@@ -86,7 +86,7 @@ class API {
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({ detail: response.statusText }));
-      throw new Error(error.detail || 'Request failed');
+      throw new Error(error.detail || '请求失败');
     }
 
     return response.json();
