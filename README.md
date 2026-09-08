@@ -306,6 +306,10 @@ docker compose build
 docker compose up -d
 ```
 
+### Automatic VPS Deployment
+
+After changes are merged into `main`, GitHub Actions builds the backend and frontend images, updates the production VPS over SSH, and verifies the backend health endpoint and frontend homepage. See [docs/VPS_AUTO_DEPLOY.md](./docs/VPS_AUTO_DEPLOY.md) for the one-time VPS and GitHub Environment setup.
+
 ### Backend Development (Without Docker)
 
 ```bash
