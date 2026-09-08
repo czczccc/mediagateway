@@ -64,7 +64,7 @@ ssh-keyscan -H 124.223.112.9
 1. 使用已配置的 host key 建立 SSH 连接；
 2. 在 VPS 的 `main` 工作区执行 `git fetch` 和快进合并；
 3. 执行 `docker compose pull` 与 `docker compose up -d --remove-orphans`；
-4. 检查 `http://127.0.0.1:3001/health` 和前端首页。
+4. 检查 `http://127.0.0.1:3002/health` 和前端首页。
 
 部署使用串行 concurrency，同一时间只允许一个生产部署。
 
