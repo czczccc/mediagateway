@@ -19,17 +19,18 @@
 
 ## Generation Verification
 
-The full generation test is **blocked** because no real Grok API key was available in the environment:
+The first generation attempt was **blocked by Grok authentication**:
 
-- Root `.env` and `backend/.env` were absent.
-- The database contained no active Grok key.
-- The uncredentialed create request returned HTTP 400:
+- `backend/.env` contained a non-empty `GROK_VIDEO_API_KEY`.
+- The frontend successfully posted one generation request and received generation ID `gen_cab0d010e20f`.
+- The backend record entered `processing`, then ended as `failed` with `All connection attempts failed`.
+- A direct Provider request from the same backend environment reached the API and returned HTTP 401:
 
 ```json
-{"detail":"No active API key found for provider: grok"}
+{"code":"INVALID_API_KEY","message":"Invalid API key"}
 ```
 
-Consequently, these acceptance checks were not executed against the external API:
+The browser showed the expected failed state and no video element was rendered. Consequently, these acceptance checks were not completed against the external API:
 
 - task creation with a valid key
 - `queued → processing → completed`
@@ -39,7 +40,7 @@ Consequently, these acceptance checks were not executed against the external API
 
 ## How to Complete the Test
 
-Set the real key in `backend/.env`:
+Replace the current key in `backend/.env` with a valid key accepted by `https://www.bb-api.com`:
 
 ```dotenv
 GROK_VIDEO_BASE_URL=https://www.bb-api.com/v1
