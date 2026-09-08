@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { getStatusLabel, zhCN } from '@/locales/zh-CN';
-import { Clock3, Coins, Film, Sparkles, Wand2 } from 'lucide-react';
+import { getStatusHint, getStatusLabel, zhCN } from '@/locales/zh-CN';
+import { Clock3, Coins, Film, Sparkles, Wand2, X } from 'lucide-react';
 
 export default function Playground() {
   const [prompt, setPrompt] = useState('');
@@ -181,9 +181,30 @@ export default function Playground() {
             </div>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
-          <div>
-            <label htmlFor="video-prompt" className="mb-2 block text-sm font-semibold">{zhCN.playground.prompt}</label>
-            <Textarea
+            <div>
+              <div className="mb-2 flex items-center justify-between gap-4">
+                <label htmlFor="video-prompt" className="text-sm font-semibold">{zhCN.playground.prompt}</label>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span aria-live="polite">
+                    {zhCN.playground.promptCount.replace('{count}', String(prompt.length))}
+                  </span>
+                  {prompt && (
+                    <button
+                      type="button"
+                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      onClick={() => {
+                        setPrompt('');
+                        setError('');
+                      }}
+                      disabled={generating}
+                    >
+                      <X className="h-3.5 w-3.5" aria-hidden="true" />
+                      {zhCN.playground.clearPrompt}
+                    </button>
+                  )}
+                </div>
+              </div>
+              <Textarea
               id="video-prompt"
               placeholder={zhCN.playground.promptPlaceholder}
               value={prompt}
@@ -328,6 +349,9 @@ export default function Playground() {
                   <CardTitle className="text-xl text-white">
                     {currentGeneration.status === 'completed' ? zhCN.playground.resultReady : zhCN.playground.generationStatus}
                   </CardTitle>
+                  <p className="mt-2 max-w-sm text-sm text-slate-300" aria-live="polite">
+                    {getStatusHint(currentGeneration.status)}
+                  </p>
                 </div>
                 <span
                   role="status"

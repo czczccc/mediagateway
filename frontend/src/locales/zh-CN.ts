@@ -14,6 +14,8 @@ export const zhCN = {
     cardDescription: '输入提示词并配置参数',
     prompt: '提示词',
     promptPlaceholder: '例如：宁静的山间日落，群鸟飞过……',
+    promptCount: '{count} 字',
+    clearPrompt: '清空提示词',
     promptExamplesTitle: '试试这些提示词',
     promptExamples: [
       {
@@ -65,6 +67,12 @@ export const zhCN = {
     generationFailed: '视频生成失败',
     failedToCheckStatus: '状态查询失败',
     generationTimeout: '生成超时',
+    statusHint: {
+      queued: '任务已提交，正在排队等待生成。',
+      processing: '模型正在生成画面，请稍候。',
+      completed: '视频已生成，可以直接播放或下载。',
+      failed: '生成失败，请检查提示词或 API 密钥后重试。',
+    },
   },
   gallery: {
     title: '作品库',
@@ -174,6 +182,10 @@ export const zhCN = {
 
 export function getStatusLabel(status: string): string {
   return zhCN.status[status as keyof typeof zhCN.status] || status;
+}
+
+export function getStatusHint(status: string): string {
+  return zhCN.playground.statusHint[status as keyof typeof zhCN.playground.statusHint] || zhCN.playground.generationStatus;
 }
 
 export function getKeyStatusLabel(status: string): string {

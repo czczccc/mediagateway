@@ -57,6 +57,7 @@
 ## Validation
 
 - Prompt is required by the existing client validation.
+- Prompt input shows a localized character count, exposes an app-owned clear action when non-empty, and offers localized example prompts that replace the current draft without changing the API contract.
 - API behavior and request payloads remain unchanged.
 - API key fields remain masked and are not placed in URLs or client storage.
 
@@ -65,3 +66,4 @@
 - Required command: `npm run build`
 - Type check: `npm run type-check`
 - Browser: generation page, video library, cost display, completed video playback, and narrow viewport.
+- Generation status cards provide localized queued/processing/completed/failed labels and a short next-step hint.
