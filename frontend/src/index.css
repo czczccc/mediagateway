@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 195 25% 97%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 187 78% 29%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 186 27% 91%;
+    --secondary-foreground: 187 78% 22%;
+    --muted: 195 21% 93%;
+    --muted-foreground: 215 16% 42%;
+    --accent: 39 92% 95%;
+    --accent-foreground: 32 74% 25%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --border: 194 22% 87%;
+    --input: 194 22% 82%;
+    --ring: 187 78% 29%;
+    --radius: 0.625rem;
   }
 
   .dark {
@@ -55,5 +55,29 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-feature-settings: "tnum";
+  }
+}
+
+@layer base {
+  ::selection {
+    background: hsl(var(--primary) / 0.18);
+  }
+
+  * {
+    scrollbar-color: hsl(var(--muted-foreground) / 0.45) hsl(var(--muted));
+    scrollbar-width: thin;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
   }
 }
