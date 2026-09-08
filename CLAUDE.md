@@ -73,6 +73,14 @@ npm run lint
 npm run build
 ```
 
+## Task Completion Workflow
+
+- After each independently completed task or implementation increment, run the relevant verification commands.
+- Commit the completed changes with a descriptive message.
+- Push the task branch to the remote repository.
+- Merge the task branch into `main` and push the updated `main` branch.
+- Keep secrets and generated runtime artifacts out of commits. If verification, push, or merge is blocked, report the blocker instead of bypassing it.
+
 ## Architecture Overview
 
 ### Provider System
