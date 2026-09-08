@@ -19,6 +19,7 @@ export default function Settings() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
+    document.title = `${zhCN.settings.title} - MediaRouter`;
     loadData();
   }, []);
 

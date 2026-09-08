@@ -36,14 +36,14 @@
 
 | Operation | Trigger | Pending | Success destination | Success feedback | Failure recovery |
 |---|---|---|---|---|---|
-| Create | 生成视频 | Button locked; status card polls | Stay on 视频生成 | Show completed state and video | Inline error; preserve prompt |
-| Delete | 删除 | Confirmation dialog | Stay in 视频库 | Refresh current list | Inline error; preserve list |
-| Filter | Provider/status select | List loading state | Stay in 视频库 | Updated result set | Empty/no-result message |
+| Create | 开始生成 | Button locked; status card polls | Stay on 创作中心 | Show completed state and video | Inline error; preserve prompt |
+| Delete | 删除 | Confirmation dialog | Stay in 作品库 | Refresh current list | Inline error; preserve list |
+| Filter | Provider/status select | List loading state | Stay in 作品库 | Updated result set | Empty/no-result message |
 
 ## Navigation and responsive behavior
 
 - Route titles and navigation use the `zh-CN` locale.
-- Desktop uses a two-column creation workspace; narrow screens use a single column.
+- Desktop uses a two-column 创作中心 workspace; narrow screens use a single column.
 - Video media reserves its aspect-ratio box to prevent layout shift.
 - Native select/date controls remain the canonical controls for this scope.
 

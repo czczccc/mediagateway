@@ -128,8 +128,8 @@ export const zhCN = {
   },
   usage: {
     loading: '用量数据加载中……',
-    title: '用量与费用分析',
-    description: '跟踪视频生成用量和费用',
+    title: '使用统计',
+    description: '查看视频生成数量、时长与消耗金额',
     dateRange: '日期范围',
     startDate: '开始日期',
     endDate: '结束日期',

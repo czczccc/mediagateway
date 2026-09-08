@@ -57,6 +57,7 @@ export default function Usage() {
   });
 
   useEffect(() => {
+    document.title = `${zhCN.usage.title} - MediaRouter`;
     loadData();
   }, [dateRange]);
 

@@ -20,6 +20,7 @@ export default function Playground() {
   const [estimatedCost, setEstimatedCost] = useState<number | null>(null);
 
   useEffect(() => {
+    document.title = `${zhCN.playground.title} - MediaRouter`;
     loadProviders();
   }, []);
 

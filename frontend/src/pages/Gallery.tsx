@@ -16,6 +16,7 @@ export default function Gallery() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
+    document.title = `${zhCN.gallery.title} - MediaRouter`;
     loadGenerations();
   }, [filterProvider, filterStatus]);
 
@@ -129,9 +130,16 @@ export default function Gallery() {
           <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">{zhCN.gallery.emptyDescription}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {generations.map((generation) => (
-            <Card key={generation.id} className="group overflow-hidden border-slate-200 shadow-sm transition-shadow hover:shadow-md">
+        <section aria-labelledby="generated-videos-heading">
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <h2 id="generated-videos-heading" className="text-lg font-semibold">
+              {zhCN.gallery.generatedVideos}
+            </h2>
+            <span className="text-sm text-muted-foreground">{generations.length} {zhCN.gallery.results}</span>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {generations.map((generation) => (
+              <Card key={generation.id} className="group overflow-hidden border-slate-200 shadow-sm transition-shadow hover:shadow-md">
               <CardContent className="p-0">
                 {generation.status === 'completed' && generation.video?.url ? (
                   <video
@@ -201,8 +209,9 @@ export default function Gallery() {
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
+            ))}
+          </div>
+        </section>
       )}
 
       <ConfirmDialog
