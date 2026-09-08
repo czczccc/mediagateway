@@ -104,6 +104,8 @@ export const zhCN = {
     confirmDelete: '确定要删除这个 API 密钥吗？',
     keyDeleted: 'API 密钥删除成功！',
     failedToDelete: 'API 密钥删除失败',
+    deleteDescription: '删除后将移除该 API 密钥，之后无法使用它调用对应 Provider。',
+    deleting: '删除中……',
     keyValid: 'API 密钥有效！',
     keyInvalid: 'API 密钥无效',
     failedToValidate: 'API 密钥验证失败',

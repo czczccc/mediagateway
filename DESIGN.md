@@ -9,8 +9,8 @@ colors:
   surface: "#FFFFFF"
   ink: "#0F172A"
   muted: "#64748B"
-  border: "#D8E1E5"
   danger: "#DC2626"
+  on-primary: "#FFFFFF"
 typography:
   sans:
     fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, sans-serif"
@@ -25,14 +25,26 @@ spacing:
   section-gap: "2.5rem"
   page-max: "72rem"
 components:
+  page:
+    backgroundColor: "#F5F8F8"
+    textColor: "#0F172A"
   button:
+    backgroundColor: "#0E7490"
+    textColor: "#FFFFFF"
     height: "2.75rem"
-    radius: "0.625rem"
+    rounded: "0.625rem"
   card:
-    radius: "1rem"
-    border: "#D8E1E5"
+    backgroundColor: "#FFFFFF"
+    textColor: "#0F172A"
+    rounded: "1rem"
   status:
-    radius: "9999px"
+    backgroundColor: "#0E7490"
+    textColor: "#FFFFFF"
+    rounded: "9999px"
+  meta:
+    textColor: "#64748B"
+  cost:
+    backgroundColor: "#F59E0B"
 ---
 
 # MediaRouter 创作工作台设计系统

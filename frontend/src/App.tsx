@@ -3,7 +3,6 @@ import Playground from './pages/Playground';
 import Gallery from './pages/Gallery';
 import Settings from './pages/Settings';
 import Usage from './pages/Usage';
-import { Button } from './components/ui/button';
 import { zhCN } from './locales/zh-CN';
 import { BarChart3, Clapperboard, Settings2, Sparkles } from 'lucide-react';
 
@@ -11,6 +10,7 @@ function Navigation() {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
+  const navLinkClass = (active: boolean) => `inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${active ? 'bg-white/10 text-white hover:bg-white/15' : 'text-slate-300 hover:bg-white/10 hover:text-white'}`;
 
   return (
     <nav className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950 text-white shadow-lg shadow-slate-950/10">
@@ -24,45 +24,21 @@ function Navigation() {
               MediaRouter
             </Link>
             <div className="flex gap-1 overflow-x-auto">
-              <Link to="/" aria-current={isActive('/') ? 'page' : undefined}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={isActive('/') ? 'bg-white/10 text-white hover:bg-white/15 hover:text-white' : 'text-slate-300 hover:bg-white/10 hover:text-white'}
-                >
-                  <Clapperboard className="mr-2 h-4 w-4" aria-hidden="true" />
-                  {zhCN.navigation.playground}
-                </Button>
+              <Link to="/" aria-current={isActive('/') ? 'page' : undefined} className={navLinkClass(isActive('/'))}>
+                <Clapperboard className="mr-2 h-4 w-4" aria-hidden="true" />
+                {zhCN.navigation.playground}
               </Link>
-              <Link to="/gallery" aria-current={isActive('/gallery') ? 'page' : undefined}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={isActive('/gallery') ? 'bg-white/10 text-white hover:bg-white/15 hover:text-white' : 'text-slate-300 hover:bg-white/10 hover:text-white'}
-                >
-                  <Clapperboard className="mr-2 h-4 w-4" aria-hidden="true" />
-                  {zhCN.navigation.gallery}
-                </Button>
+              <Link to="/gallery" aria-current={isActive('/gallery') ? 'page' : undefined} className={navLinkClass(isActive('/gallery'))}>
+                <Clapperboard className="mr-2 h-4 w-4" aria-hidden="true" />
+                {zhCN.navigation.gallery}
               </Link>
-              <Link to="/usage" aria-current={isActive('/usage') ? 'page' : undefined}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={isActive('/usage') ? 'bg-white/10 text-white hover:bg-white/15 hover:text-white' : 'text-slate-300 hover:bg-white/10 hover:text-white'}
-                >
-                  <BarChart3 className="mr-2 h-4 w-4" aria-hidden="true" />
-                  {zhCN.navigation.usage}
-                </Button>
+              <Link to="/usage" aria-current={isActive('/usage') ? 'page' : undefined} className={navLinkClass(isActive('/usage'))}>
+                <BarChart3 className="mr-2 h-4 w-4" aria-hidden="true" />
+                {zhCN.navigation.usage}
               </Link>
-              <Link to="/settings" aria-current={isActive('/settings') ? 'page' : undefined}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={isActive('/settings') ? 'bg-white/10 text-white hover:bg-white/15 hover:text-white' : 'text-slate-300 hover:bg-white/10 hover:text-white'}
-                >
-                  <Settings2 className="mr-2 h-4 w-4" aria-hidden="true" />
-                  {zhCN.navigation.settings}
-                </Button>
+              <Link to="/settings" aria-current={isActive('/settings') ? 'page' : undefined} className={navLinkClass(isActive('/settings'))}>
+                <Settings2 className="mr-2 h-4 w-4" aria-hidden="true" />
+                {zhCN.navigation.settings}
               </Link>
             </div>
           </div>

@@ -3,6 +3,7 @@ import { api, APIKeyResponse, ProviderInfo } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { getKeyStatusLabel, zhCN } from '@/locales/zh-CN';
 
 export default function Settings() {
@@ -14,6 +15,8 @@ export default function Settings() {
   const [newApiKey, setNewApiKey] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState<APIKeyResponse | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
     loadData();
@@ -60,16 +63,16 @@ export default function Settings() {
   };
 
   const handleDeleteKey = async (keyId: number) => {
-    if (!confirm(zhCN.settings.confirmDelete)) {
-      return;
-    }
-
+    setDeletingId(keyId);
     try {
       await api.deleteAPIKey(keyId);
       setSuccess(zhCN.settings.keyDeleted);
       await loadData();
     } catch (err: any) {
       setError(err.message || zhCN.settings.failedToDelete);
+    } finally {
+      setDeletingId(null);
+      setDeleteTarget(null);
     }
   };
 
@@ -171,7 +174,8 @@ export default function Settings() {
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => handleDeleteKey(key.id)}
+                        onClick={() => setDeleteTarget(key)}
+                        disabled={deletingId === key.id}
                       >
                         {zhCN.settings.delete}
                       </Button>
@@ -279,6 +283,22 @@ export default function Settings() {
           </div>
         </CardContent>
       </Card>
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        title={zhCN.settings.confirmDelete}
+        description={zhCN.settings.deleteDescription}
+        confirmLabel={zhCN.settings.delete}
+        cancelLabel={zhCN.settings.cancel}
+        busy={deleteTarget !== null && deletingId === deleteTarget.id}
+        busyLabel={zhCN.settings.deleting}
+        onCancel={() => {
+          if (!deletingId) setDeleteTarget(null);
+        }}
+        onConfirm={() => {
+          if (deleteTarget) void handleDeleteKey(deleteTarget.id);
+        }}
+      />
     </div>
   );
 }
