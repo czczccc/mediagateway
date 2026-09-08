@@ -2,7 +2,7 @@
 from pydantic_settings import BaseSettings
 from pydantic import field_validator
 from functools import lru_cache
-from typing import Union
+from typing import Optional, Union
 
 
 class Settings(BaseSettings):
@@ -19,6 +19,11 @@ class Settings(BaseSettings):
     port: int = 3001
     host: str = "0.0.0.0"
     frontend_url: str = "http://localhost:3000"
+
+    # Grok video provider
+    grok_video_base_url: str = "https://www.bb-api.com/v1"
+    grok_video_api_key: Optional[str] = None
+    grok_video_model: str = "grok-imagine-video-1.5"
 
     # Security
     encryption_key: str = "change-this-encryption-key"

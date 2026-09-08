@@ -3,6 +3,7 @@ from .base import VideoProvider, VideoRequest, VideoResponse, ProviderFeatures
 from .sora import SoraProvider
 from .runway import RunwayProvider
 from .kling import KlingProvider
+from .grok import GrokProvider
 
 
 # Provider registry
@@ -10,6 +11,7 @@ PROVIDERS = {
     "openai": SoraProvider,
     "runway": RunwayProvider,
     "kling": KlingProvider,
+    "grok": GrokProvider,
 }
 
 # Model to provider mapping
@@ -20,6 +22,7 @@ MODEL_PROVIDER_MAP = {
     "runway-gen4": "runway",
     "kling-1.5": "kling",
     "kling-1.0": "kling",
+    "grok-imagine-video-1.5": "grok",
 }
 
 
@@ -44,6 +47,7 @@ __all__ = [
     "SoraProvider",
     "RunwayProvider",
     "KlingProvider",
+    "GrokProvider",
     "PROVIDERS",
     "MODEL_PROVIDER_MAP",
     "get_provider_for_model",
