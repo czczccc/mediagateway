@@ -191,6 +191,27 @@ export default function Playground() {
               rows={5}
               disabled={generating}
             />
+            <div className="mt-3">
+              <div className="mb-2 text-xs font-medium text-muted-foreground">
+                {zhCN.playground.promptExamplesTitle}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {zhCN.playground.promptExamples.map((example) => (
+                  <button
+                    key={example.label}
+                    type="button"
+                    className="rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:bg-primary/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    onClick={() => {
+                      setPrompt(example.prompt);
+                      setError('');
+                    }}
+                    disabled={generating}
+                  >
+                    {example.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
