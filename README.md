@@ -26,7 +26,7 @@
 
 **Own Your Video Generation Stack** - MediaRouter is the only 100% open source video generation gateway that gives you:
 
-- 🔓 **No Vendor Lock-in**: Switch between Sora, Runway, Kling, and more with a single API
+- 🔓 **No Vendor Lock-in**: Switch between Sora, Runway, Kling, Grok, and more with a single API
 - 🔑 **Bring Your Own Keys**: Your API keys, your data, your control
 - 💰 **Cost Transparency**: Real-time cost tracking across all providers
 - 🏠 **Run Anywhere**: Docker-based deployment in 30 seconds
@@ -48,7 +48,7 @@ Unlike proprietary solutions, MediaRouter gives you:
 - **🔌 Unified API**: Single OpenAI-compatible endpoint for multiple providers
 - **🎨 Beautiful Playground**: Modern React UI with shadcn/ui components
 - **🔑 BYOK Model**: Bring Your Own Keys - no vendor lock-in
-- **🎯 Multiple Providers**: Support for Sora 2, Runway, Kling, and more
+- **🎯 Multiple Providers**: Support for Sora 2, Runway, Kling, Grok Imagine, and more
 - **📊 Usage Tracking**: Monitor costs, generation times, and success rates
 - **🎬 Video Gallery**: Browse and manage your generated videos
 - **🚀 One Command Setup**: Get started instantly with Docker Compose
@@ -61,10 +61,11 @@ Unlike proprietary solutions, MediaRouter gives you:
 | **OpenAI Sora** | Sora 2, Sora 1 | ✅ | ✅ | ✅ **Public** | $0.10/sec |
 | **Runway** | Gen-3, Gen-4 | ✅ | ❌ | ✅ **Public** | Usage-based |
 | **Kling AI** | v1.5, v1.0 | ✅ | ❌ | ✅ **Public** | Credit-based |
+| **Grok Imagine** | grok-imagine-video-1.5 | ✅ | ❌ | ✅ | Not specified |
 | Pika Labs | Coming soon | ✅ | - | 🚧 Planned | - |
 | Luma Dream Machine | Coming soon | ✅ | - | 🚧 Planned | - |
 
-**All Three Providers Working**: Sora 2, Runway, and Kling all have public APIs available now!
+**All four configured providers** are available through the unified generation API.
 
 ## 🚀 Quick Start
 
@@ -145,7 +146,7 @@ npm run dev
 
 1. Navigate to **Settings** page
 2. Click "Add API Key"
-3. Select your provider (OpenAI, Runway, or Kling)
+3. Select your provider (OpenAI, Runway, Kling, or Grok)
 4. Paste your API key
 5. Click "Add Key" to validate and save
 
@@ -242,6 +243,18 @@ Visit http://localhost:3001/docs for interactive API documentation.
 3. Navigate to API section
 4. Generate API key
 
+### Grok Imagine
+
+Grok video can be configured either through **Settings → Add API Key** or with environment variables:
+
+```dotenv
+GROK_VIDEO_BASE_URL=https://www.bb-api.com/v1
+GROK_VIDEO_API_KEY=your-grok-video-key
+GROK_VIDEO_MODEL=grok-imagine-video-1.5
+```
+
+The provider uses `POST /videos`, polls `GET /videos/{request_id}`, and downloads completed content from `/videos/{request_id}/content`.
+
 ## 🏗️ Architecture
 
 ```
@@ -250,6 +263,7 @@ mediarouter/
 │   ├── src/
 │   │   ├── api/            # API routes and schemas
 │   │   ├── providers/      # Provider adapters
+│   │   │   ├── grok.py     # Grok Imagine video provider
 │   │   ├── services/       # Business logic
 │   │   ├── models/         # Database models
 │   │   └── db/             # Database setup

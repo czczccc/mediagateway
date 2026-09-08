@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MediaRouter is an open-source unified API gateway for AI video generation providers (OpenAI Sora, Runway, Kling AI). It provides an OpenAI-compatible API with BYOK (Bring Your Own Keys) model, built with FastAPI backend and React frontend.
+MediaRouter is an open-source unified API gateway for AI video generation providers (OpenAI Sora, Runway, Kling AI, and Grok Imagine). It provides an OpenAI-compatible API with BYOK (Bring Your Own Keys) model, built with FastAPI backend and React frontend.
 
 ## Development Commands
 
@@ -194,6 +194,12 @@ All routes in `backend/src/api/routes.py`:
 **Kling AI:**
 - Models: `kling-1.5`, `kling-1.0`
 - Credit-based pricing (estimated at $0.03-0.04/sec)
+
+**Grok Imagine:**
+- Model: `grok-imagine-video-1.5`
+- Base URL: `https://www.bb-api.com/v1` by default
+- Supports text-to-video and image-to-video
+- Configure with `GROK_VIDEO_BASE_URL`, `GROK_VIDEO_API_KEY`, and `GROK_VIDEO_MODEL`
 
 ## Common Development Tasks
 

@@ -40,7 +40,7 @@ npm run dev
 2. **Add API Key**:
    - Go to Settings
    - Click "Add API Key"
-   - Select provider (OpenAI/Runway/Kling)
+   - Select provider (OpenAI/Runway/Kling/Grok)
    - Paste your API key
    - Click "Add Key"
 
@@ -68,6 +68,10 @@ npm run dev
 ### Kling AI
 - Visit: https://klingai.com/
 - Navigate to API section
+
+### Grok Imagine
+- Configure `GROK_VIDEO_BASE_URL`, `GROK_VIDEO_API_KEY`, and `GROK_VIDEO_MODEL` in `.env`, or add the key from Settings
+- Default model: `grok-imagine-video-1.5`
 
 ## Troubleshooting
 

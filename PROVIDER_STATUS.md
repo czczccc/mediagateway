@@ -39,6 +39,14 @@ All these providers have public APIs you can use right now:
 - **Features**: Text-to-video, Image-to-video, Video-to-video
 - **Pricing**: Credit-based
 
+#### **Grok Imagine Video**
+- **Status**: ✅ Configured
+- **Endpoint**: `https://www.bb-api.com/v1`
+- **Model**: `grok-imagine-video-1.5`
+- **Features**: Text-to-video, Image-to-video
+- **Task API**: `POST /videos`, `GET /videos/{request_id}`, `GET /videos/{request_id}/content`
+- **Pricing**: Not specified
+
 ### 📋 Planned
 
 These providers will be added when their APIs become available:
@@ -77,7 +85,7 @@ These providers will be added when their APIs become available:
 1. Open http://localhost:3000
 2. Go to Settings
 3. Click "Add API Key"
-4. Select provider (runway or kling)
+4. Select provider (runway, kling, or grok)
 5. Paste your API key
 6. Click "Add Key"
 ```
@@ -87,7 +95,7 @@ These providers will be added when their APIs become available:
 ```
 1. Go to Playground
 2. Enter your prompt
-3. Select model (runway-gen3 or kling-1.5)
+3. Select model (runway-gen3, kling-1.5, or grok-imagine-video-1.5)
 4. Configure parameters
 5. Click "Generate Video"
 ```

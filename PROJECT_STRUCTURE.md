@@ -16,7 +16,8 @@ mediarouter/
 │   │   │   ├── base.py             # Base provider interface
 │   │   │   ├── sora.py             # OpenAI Sora provider
 │   │   │   ├── runway.py           # Runway provider
-│   │   │   └── kling.py            # Kling AI provider
+│   │   │   ├── kling.py            # Kling AI provider
+│   │   │   └── grok.py             # Grok Imagine provider
 │   │   ├── services/               # Business Logic
 │   │   │   ├── encryption.py      # Key encryption
 │   │   │   ├── key_manager.py     # API key management
@@ -167,7 +168,7 @@ mediarouter/
 
 ### api_keys
 - `id`: Integer (Primary Key)
-- `provider`: String (openai, runway, kling)
+- `provider`: String (openai, runway, kling, grok)
 - `encrypted_key`: String (Fernet encrypted)
 - `status`: Enum (active, invalid, quota_exceeded, revoked)
 - `last_validated`: DateTime

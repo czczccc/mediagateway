@@ -7,6 +7,7 @@ from datetime import datetime
 import asyncio
 
 from ..db.database import get_db
+from ..config import get_settings
 from ..models import Generation, GenerationStatus, APIKey, KeyStatus
 from ..services.key_manager import get_key_manager
 from ..services.video_storage import get_video_storage
@@ -37,12 +38,20 @@ async def create_video_generation(
     # Get API key
     key_manager = get_key_manager()
     api_key = key_manager.get_key_by_provider(db, provider_name)
+    grok_env_key = (
+        get_settings().grok_video_api_key if provider_name == "grok" else None
+    )
+    has_active_db_key = api_key and api_key.status == KeyStatus.ACTIVE
 
-    if not api_key or api_key.status != KeyStatus.ACTIVE:
+    if not has_active_db_key and not grok_env_key:
         raise HTTPException(
             status_code=400,
             detail=f"No active API key found for provider: {provider_name}",
         )
+
+    provider_api_key = (
+        key_manager.decrypt_key(api_key) if has_active_db_key else grok_env_key
+    )
 
     # Create generation record
     generation_id = f"gen_{uuid.uuid4().hex[:12]}"
@@ -69,7 +78,7 @@ async def create_video_generation(
         process_video_generation,
         generation_id,
         provider_name,
-        key_manager.decrypt_key(api_key),
+        provider_api_key,
         request,
     )
 
@@ -227,6 +236,7 @@ def list_providers(db: Session = Depends(get_db)):
     """List all available providers."""
     key_manager = get_key_manager()
     provider_keys = {k.provider: k for k in key_manager.list_keys(db)}
+    settings = get_settings()
 
     provider_info = []
     for name, provider_class in PROVIDERS.items():
@@ -235,14 +245,19 @@ def list_providers(db: Session = Depends(get_db)):
         features = temp_provider.get_supported_features()
 
         api_key = provider_keys.get(name)
+        has_env_key = name == "grok" and bool(settings.grok_video_api_key)
 
         info = ProviderInfo(
             name=name,
             display_name=name.title(),
             models=temp_provider.models,
             features=features.dict(),
-            has_key=api_key is not None,
-            key_status=api_key.status.value if api_key else None,
+            has_key=api_key is not None or has_env_key,
+            key_status=(
+                api_key.status.value
+                if api_key
+                else ("active" if has_env_key else None)
+            ),
         )
         provider_info.append(info)
 
@@ -557,7 +572,7 @@ async def process_video_generation(
 
                     # For OpenAI, we need to pass the Authorization header
                     headers = None
-                    if provider_name == "openai":
+                    if provider_name in {"openai", "grok"}:
                         headers = {"Authorization": f"Bearer {api_key}"}
 
                     video_path = await storage.download_video(
